@@ -261,11 +261,11 @@ public class BankControl {
 			System.out.println("Please enter your login pin:");
 			String pin2 = sc.nextLine();
 			if (pin2.equals(acc.getPin())) {
-				System.out.println("Log in Successfully!");
+				System.out.println("Success! Log in");
 				System.out.println("Please select service");
 				Login2(acc);
 			} else
-				System.out.println("pin is not right!");
+				System.out.println("Wrong! pin is not right!");
 			Interface();
 		} else
 			System.out.println("This account doesn't exist!");
@@ -286,7 +286,7 @@ public class BankControl {
 		acc.setdate2(date3);
 		writeFile(acc);
 		System.out.println("Please enter number 1~9 to select seriviece");
-		System.out.println("<1> Check status");
+		System.out.println("<1> Check balance");
 		System.out.println("<2> Deposit money");
 		System.out.println("<3> Withdraw money");
 		System.out.println("<4> Suspend account");
@@ -421,7 +421,7 @@ public class BankControl {
 			System.out.println(" Please enter the amount you want to withdraw:");
 			int wm = sc.nextInt();
 			if (acc.getType() == 1)// Saver account
-			{
+			{	
 				if (checkDate(str3, str4) >= 7 && wm <= acc.getFund2()) {
 					acc.setfund2(-wm);
 					writeFile(acc);
