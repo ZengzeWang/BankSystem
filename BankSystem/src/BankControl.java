@@ -17,15 +17,12 @@ public class BankControl {
 	public String Acc1;
 	Scanner sc = new Scanner(System.in);
 
-	public BankControl() {
+	public BankControl() throws ParseException {
 		try {
 			Interface();
-		}
-		catch( Exception e)
-		{ 
+		} catch (Exception e) {
 			System.out.println("Wrong! Invalid input ");
-		}
-		finally {
+		} finally {
 			BankControl b = new BankControl();
 		}
 	}
@@ -33,7 +30,8 @@ public class BankControl {
 	/**
 	 * method Interface () This method is the initial interface leading to 3 main
 	 * function.
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 */
 
 	public void Interface() throws ParseException {
@@ -57,7 +55,8 @@ public class BankControl {
 
 	/**
 	 * method CreateAccount Use this method to create an account.
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 * 
 	 */
 	public void CreateAccount() throws ParseException {
@@ -65,11 +64,11 @@ public class BankControl {
 		SimpleDateFormat yyyymmdd = new SimpleDateFormat("YYYY-MM-dd");// format of date
 		date = yyyymmdd.format(new Date());
 		String accountnum = Integer.toString((int) ((Math.random() * 9 + 1) * 1000));// generate account number
-		File F = new File("check.txt");
+		File f = new File("check.txt");
 		System.out.println("Please enter your name");
 		String c = sc.nextLine();
 		String name = sc.nextLine();
-		if (readFile(F).contains(name)) // refer to credit system
+		if (readFile(f).contains(name)) // refer to credit system
 		{
 			System.out.println("You cannot open an account because of bad credit");
 			Interface();
@@ -97,13 +96,15 @@ public class BankControl {
 			int type = sc.nextInt();
 			switch (type) {
 			case 1:
-				System.out.println("You can withdraw your money after 7 days when you deposit your money");
+				System.out.println("Success! You open a saver account");
+				System.out.println("You can withdraw your money after 7 days when you make appointment");
 				break;
 			case 2:
-				System.out.println("You have successfully open a junior account");
+				System.out.println("Success! You open a junior account");
 				break;
 			case 3:
-				System.out.println("This is a current account, you have a 500 dollars overdraft limit");
+				System.out.println("Success! You open a current account");
+				System.out.println("you have a 500 dollars overdraft limit");
 				break;
 			default:
 				System.out.println("Wrong input!");
@@ -112,8 +113,8 @@ public class BankControl {
 			}
 			String pin = Integer.toString((int) ((Math.random() * 9 + 1) * 100000));
 			Account acc = new Account(type, name, addr, birth, pin, accountnum, 0, 0, date0, date0, true);
-			File f = new File(accountnum + ".txt");
-			if (f.exists())
+			File fi = new File(accountnum + ".txt");
+			if (fi.exists())
 				System.out.println("This account number has already existed!");
 			else {
 				writeFile(acc);// store information
@@ -246,7 +247,8 @@ public class BankControl {
 
 	/**
 	 * Method Login1() This method is used to log in.
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 */
 	public void Login1() throws ParseException {
 		String c = sc.nextLine();
@@ -283,14 +285,15 @@ public class BankControl {
 		date3 = ymd.format(new Date());
 		acc.setdate2(date3);
 		writeFile(acc);
+		System.out.println("Please enter number 1~9 to select seriviece");
 		System.out.println("<1> Check status");
 		System.out.println("<2> Deposit money");
 		System.out.println("<3> Withdraw money");
 		System.out.println("<4> Suspend account");
 		System.out.println("<5> Active account");
-		System.out.println("<6> Close account");
-		System.out.println("<7> Clear fund");
-		System.out.println("<8> Show information");
+		System.out.println("<6> Clear fund");
+		System.out.println("<7> Show information");
+		System.out.println("<8> Close account");
 		System.out.println("<9> Logout");
 		int o = sc.nextInt();
 		switch (o) {
@@ -310,13 +313,13 @@ public class BankControl {
 			Active(acc);
 			break;
 		case 6:
-			Close(acc);
+			Clear(acc);
 			break;
 		case 7:
-			Clear();
+			Checkinfo(acc);
 			break;
 		case 8:
-			Checkinfo();
+			Close(acc);
 			break;
 		case 9:
 			Interface();
@@ -333,7 +336,7 @@ public class BankControl {
 	 * money, state of account in the user file.
 	 * 
 	 * @param acc
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public void Lookup(Account acc) throws ParseException {
 		System.out.println("Now your balance is:  " + acc.getFund2());
@@ -350,7 +353,7 @@ public class BankControl {
 	 * Method Deposit() This method is used to deposit.
 	 * 
 	 * @param acc
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public void Deposit(Account acc) throws ParseException {
 		String c = sc.nextLine();
@@ -367,7 +370,7 @@ public class BankControl {
 				if (Acc1.equals(Acc2))// varify authorisation
 				{
 					if (acc.getType() == 1) {
-						System.out.println("You can only withdraw 7 days after depositing money");
+						System.out.println("Notice: You can only withdraw 7 days after depositing money");
 					}
 					String date5;
 					SimpleDateFormat ymd = new SimpleDateFormat("YYYY-MM-dd");
@@ -378,7 +381,7 @@ public class BankControl {
 					switch (h) {
 					case 1:
 						acc.setfund2(am1);
-						System.out.println("Success! Your balance is" + acc.getFund2());
+						System.out.println("Success! Your balance is " + acc.getFund2());
 						break;
 					case 2:
 						acc.setfund1(am1);
@@ -408,13 +411,14 @@ public class BankControl {
 	 * Method Withdraw() This method is used for a user to withdraw money
 	 * 
 	 * @param acc
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public void Withdraw(Account acc) throws ParseException {
 		String[] str3 = acc.getDate2().split("\\-");
 		String[] str4 = acc.getDate1().split("\\-");
 		if (acc.getState() == true) {// check state
-			System.out.println("Your balance : " + acc.getFund2() + " Please enter the amount you want to withdraw:");
+			System.out.println("Your balance : " + acc.getFund2());
+			System.out.println(" Please enter the amount you want to withdraw:");
 			int wm = sc.nextInt();
 			if (acc.getType() == 1)// Saver account
 			{
@@ -428,7 +432,10 @@ public class BankControl {
 					System.out.println("Your balance " + acc.getFund2());
 				}
 				if (checkDate(str3, str4) < 7) {
-					System.out.println("Wrong! you can't deposit money within 7 days");
+					System.out.println("Saver account should make appointment 7 days earlier");
+					System.out.println("Please enter 1 to make appointment");
+					int i = sc.nextInt();
+					Login2(acc);
 				}
 
 			}
@@ -467,7 +474,7 @@ public class BankControl {
 	 * Method Suspend() This method is used to suspend the account
 	 * 
 	 * @param acc
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public void Suspend(Account acc) throws ParseException {
 		System.out.println("Please enter your pin to confirm ");
@@ -489,11 +496,11 @@ public class BankControl {
 	 * Method Active() This method is used to active suspended account
 	 * 
 	 * @param acc
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public void Active(Account acc) throws ParseException {
-		System.out.println("Please enter your pin to confirm");
 		String c = sc.nextLine();
+		System.out.println("Please enter your pin to confirm");
 		String pin4 = sc.nextLine();
 		if (pin4.equals(acc.getPin()))// verify the pin
 		{
@@ -503,7 +510,7 @@ public class BankControl {
 		} else {
 			System.out.println("Wrong pin");
 			Login2(acc);
-		Login2(acc);
+			Login2(acc);
 		}
 	}
 
@@ -512,11 +519,11 @@ public class BankControl {
 	 * his user file.
 	 * 
 	 * @param acc
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	public void Close(Account acc) throws ParseException {
-		System.out.println("Please enter your pin to confirm");
 		String c = sc.nextLine();
+		System.out.println("Please enter your pin to confirm");
 		String pin6 = sc.nextLine();
 		if (pin6.equals(acc.getPin()))// verify the pin
 		{
@@ -533,9 +540,10 @@ public class BankControl {
 
 	/**
 	 * Method Checkinfo() This method is user to show all information
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 **/
-	public void Checkinfo() throws ParseException {
+	public void Checkinfo(Account acc) throws ParseException {
 		String c = sc.nextLine();
 		System.out.println("Please input the account number that you want to check");
 		String ACC = sc.nextLine();
@@ -558,14 +566,15 @@ public class BankControl {
 			System.out.println("(true for active; false for suspended)");
 		} else
 			System.out.println("This account number doesn't exist.");
-		Login1();
+		Login2(acc);
 	}
 
 	/**
 	 * Method Clear() This method is used to clear deposit
-	 * @throws ParseException 
+	 * 
+	 * @throws ParseException
 	 */
-	public void Clear() throws ParseException {
+	public void Clear(Account acc) throws ParseException {
 		String c = sc.nextLine();
 		System.out.println("Please enter the account number that you want to clear");
 		String ACC = sc.nextLine();
@@ -579,7 +588,7 @@ public class BankControl {
 			Login2(ACC2);
 		} else
 			System.out.println("This account doesn't exist");
-		Login1();
+		Login2(acc);
 	}
 
 }
