@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"Account","h":"","u":""},{"l":"BankControl","h":"","u":""},{"l":"test","h":"","u":""}]
